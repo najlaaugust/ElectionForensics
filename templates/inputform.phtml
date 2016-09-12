@@ -1,0 +1,198 @@
+<?php if (isset($_SESSION["analysis_data"])) {
+            $analysis_data = unserialize($_SESSION["analysis_data"]);	
+        }
+?>
+<style>
+    #waitmessage {
+        /*
+        position:  absolute;
+        top: 350px;
+        left:  700px;
+        z-index: -1;            
+        width:  200px;*/
+        background: #cc6600;
+        color: white;
+        padding: 4px;
+    }
+    .dim {
+        background-color: black !important;
+    }
+</style>
+<script>
+	    $(document).ready(function () {
+
+            <?php if (isset($_SESSION["analysis_data"])) { ?>
+		            // persist user selection start
+		            $('#level').val('<?php echo $analysis_data->level; ?>');
+		            $('#registered').val('<?php echo $analysis_data->registered; ?>');
+		            $('#votes').val('<?php echo $analysis_data->votes; ?>');
+
+                    $("#candidates option").each(function() {
+			            <?php foreach(explode(',', $analysis_data->candidates) as $c) { ?>				
+				            if (this.value == '<?php echo $c; ?>') {
+					            //alert(this.value);
+					            $(this).attr('selected', 'selected');
+					            $(this).trigger("chosen:updated");
+
+					            //$("#candidates option[value='"+this.value+"']").attr('selected', 'selected');
+				            }
+			            <?php } ?>
+		            });
+
+		            $("input[type=checkbox]").each(function() {
+			            <?php foreach (explode(',', $analysis_data->methods) as $m) { ?>
+				            if (this.value == '<?php echo $m; ?>')
+					            $(this).prop('checked', true);
+			            <?php } ?>
+		            });
+		            // persist user selection end
+            <?php } ?>
+
+            $('#waitmessage').hide();
+	    });
+
+    function showWait() {
+        $('#waitmessage').show();
+    }
+
+</script>
+
+
+<form enctype="multipart/form-data" class="pure-form pure-form-aligned" name="myForm" method="POST" action="/processuserinput/<?php echo(substr($_SERVER['PHP_SELF'], 11)); ?>">  
+        <fieldset>
+		  <div class="pure-control-group">
+		       1a. Choose Election Country and Year<br/>
+		      <select name="country" id="country" onchange="this.form.submit()">
+			  <option value=""></option>
+			  <option value="Afghanistan 2014 initial" <?php echo ($_POST['country'] == 'Afghanistan 2014 initial') ? "selected" : "" ; ?>>Afghanistan 2014 initial</option>
+			  <option value="Afghanistan 2014 runoff" <?php echo ($_POST['country'] == 'Afghanistan 2014 runoff') ? "selected" : "" ; ?>>Afghanistan 2014 runoff</option>
+			  <option value="Albania 2013" <?php echo ($_POST['country'] == 'Albania 2013') ? "selected" : "" ; ?>>Albania 2013</option>
+			  <option value="Bangladesh 2001" <?php echo ($_POST['country'] == 'Bangladesh 2001') ? "selected" : "" ; ?>>Bangladesh 2001</option>
+			  <option value="Cambodia 2013" <?php echo ($_POST['country'] == 'Cambodia 2013') ? "selected" : "" ; ?>>Cambodia 2013</option>
+			  <option value="Kenya 2013" <?php echo ($_POST['country'] == 'Kenya 2013') ? "selected" : "" ; ?>>Kenya 2013</option>
+			  <option value="Libya 2014" <?php echo ($_POST['country'] == 'Libya 2014') ? "selected" : "" ; ?>>Libya 2014</option>
+			  <option value="Libya 2014 Fem" <?php echo ($_POST['country'] == 'Libya 2014 Fem') ? "selected" : "" ; ?>>Libya 2014 Fem</option>
+			  <option value="South Africa 2014" <?php echo ($_POST['country'] == 'South Africa 2014') ? "selected" : "" ; ?>>South Africa 2014</option>
+			  <option value="Uganda 2006" <?php echo ($_POST['country'] == 'Uganda 2006') ? "selected" : "" ; ?>>Uganda 2006</option>
+		      </select>
+		      <!--<span class="error">* <?php echo $nameErr;?></span>-->
+		  </div>
+		  <div class="pure-control-group">
+		      1b. Upload Data File<br/>
+		      <input type="file" name="userfile" onchange="this.form.submit()">
+		      <!--<span class="error">* <?php echo $emailErr;?></span>-->
+		  </div>  
+    <!--
+		  <p>
+		      <input type="checkbox" checked="checked">Header
+		  </p>
+		  <p>
+		      <b>Separator</b><br/>
+		      <input type="radio" name="">Comma
+		      <input type="radio" name="">Semicolon
+		      <input type="radio" name="">Tab
+		  </p>
+		  <p>
+		      <b>Quote</b><br/>
+		      <input type="radio" name="">None
+		      <input type="radio" name="">Double Quote
+		      <input type="radio" name="">Single Quote
+		  </p>
+            -->
+		  <p class="box">
+		      Using data from:
+		      <label name="userfileText" class="filename" id="userfileText"><?php echo $_SESSION["userSelectedFile"]; ?></label>
+		  </p>
+            
+<?php
+if(isset($_SESSION["userSelectedFile"])) {
+    $head = $_SESSION["head"];
+?>
+
+		  <div class="pure-control-group">
+		      2. Select Candidates/Parties<br/>
+		      <select data-placeholder="Select Candidates/Parties" name="candidates[]" id="candidates" multiple class="chosen-select">
+		      <?php foreach ($head as $dataValue) {
+		
+			 if ($dataValue == '') {
+			    //echo "<option selected value='All Leaders'>All Leaders<option>";
+			    echo "<option value='All Leaders'>All Leaders<option>";  
+			 }
+			 else {
+			    echo "<option value=" . $dataValue . ">";
+			    echo $dataValue;
+			    echo "</option>";             
+			 }
+		
+		      } ?>
+		      </select>
+		      <span class="error">* <?php echo $nameErr;?></span>
+		  </div>
+		  <div class="pure-control-group">
+		      3. Select Level<br/>
+		      <select name="level" id="level">
+		      <?php foreach ($head as $dataValue) {
+			$optionValue = ($dataValue == '') ? "All" : $dataValue;
+			echo "<option value=" . $optionValue . ">";
+			echo $optionValue;
+			echo "</option>";
+		      } ?>
+		      </select>
+		      <span class="error">* <?php echo $nameErr;?></span>
+		  </div>
+		  <div class="pure-control-group">
+		      4. Select Total Registered<br/>
+		      <select name="registered" id="registered">
+		      <?php foreach ($head as $dataValue) {
+			$optionValue = ($dataValue == '') ? "-" : $dataValue;
+			echo "<option value=" . $optionValue . ">";
+			echo $optionValue;
+			echo "</option>";
+		      } ?>
+		      </select>
+		      <span class="error">* <?php echo $nameErr;?></span>
+		  </div>
+		  <div class="pure-control-group">
+		      5. Select Total Votes<br/>
+		      <select name="votes" id="votes">
+		      <?php foreach ($head as $dataValue) {
+			$optionValue = ($dataValue == '') ? "-" : $dataValue;
+			echo "<option value=" . $optionValue . ">";
+			echo $optionValue;
+			echo "</option>";
+		      } ?>
+		      </select>
+		      <span class="error">* <?php echo $nameErr;?></span>
+		  </div>
+		  <div class="pure-control-group">
+		      6. Check Methods<br/>
+		      <input name='methods[]' type="checkbox" value="1">Benford's 2nd Digit<br/>
+		      <input name='methods[]' type="checkbox" value="2">Last Digit (Counts)<br/>
+		      <input name='methods[]' type="checkbox" value="3">Percent (05s)<br/>
+		      <input name='methods[]' type="checkbox" value="4">Counts (05s)<br/>
+		      <input name='methods[]' type="checkbox" value="5">Skewness/Kurtosis<br/>
+		      <input name='methods[]' type="checkbox" value="6">Multimodality Test<br/>
+		      <input name='methods[]' type="checkbox" value="7">Klimek et al. simulation method<br/>
+		      <input name='methods[]' type="checkbox" value="8">finite mixture likehood method
+		  </div>
+
+		  <input type="submit" value="Start Analysis" name="StartAnalysis" onclick="showWait()">  <p style="margin: 10px"></p>
+
+        <?php
+        if(isset($_SESSION["analysis_data"])) 
+        {
+        ?>
+                <input type="submit" value="Download Results" name="DownloadResults" onclick="document.location.href='/download'; return false;">  
+                <input type="submit" value="Download HTML" name="DownloadHTML" onclick="document.location.href='/downloadHTML'; return false;">  
+        <?php
+        }
+        ?>
+
+        <div id="waitmessage">Please wait..</div>
+
+<?php
+}
+?>
+            
+        </fieldset>
+		</form>        

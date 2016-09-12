@@ -1,0 +1,148 @@
+<?php if (isset($_SESSION["analysis_data_maps"])) {
+            $analysis_data_maps = unserialize($_SESSION["analysis_data_maps"]);	
+        }
+?>
+<style>
+    #waitmessage {
+        /*
+        position:  absolute;
+        top: 350px;
+        left:  700px;
+        z-index: -1;            
+        width:  200px;*/
+        background: #cc6600;
+        color: white;
+        padding: 4px;
+    }
+    .dim {
+        background-color: black !important;
+    }
+</style>
+<script>
+	    $(document).ready(function () {
+
+            <?php if (isset($_SESSION["analysis_data_maps"])) { ?>
+		            // persist user selection start
+		            $('#mergeindex_maps').val('<?php echo $analysis_data_maps->mergeindex; ?>');
+
+                    $("#candidates_maps option").each(function() {
+			            <?php foreach(explode(',', $analysis_data_maps->candidates) as $c) { ?>				
+				            if (this.value == '<?php echo $c; ?>') {
+					            //alert(this.value);
+					            $(this).attr('selected', 'selected');
+					            $(this).trigger("chosen:updated");
+				            }
+			            <?php } ?>
+		            });
+
+		            $("input[type=checkbox]").each(function() {
+			            <?php foreach (explode(',', $analysis_data_maps->methods) as $m) { ?>
+				            if (this.value == '<?php echo $m; ?>')
+					            $(this).prop('checked', true);
+			            <?php } ?>
+		            });
+		            // persist user selection end
+            <?php } ?>
+
+            $('#waitmessage').hide();
+	    });
+
+    function showWait() {
+        $('#waitmessage').show();
+    }
+
+</script>
+
+
+<form enctype="multipart/form-data" class="pure-form pure-form-aligned" name="myForm" method="POST" action="/processuserinput_maps/<?php echo(substr($_SERVER['PHP_SELF'], 11)); ?>">  
+        <fieldset>
+		  <div class="pure-control-group">
+		       1a. Choose Election Country and Year<br/>
+		      <select name="country_maps" id="country_maps" onchange="this.form.submit()">
+			  <option value=""></option>
+			  <option value="Afghanistan_2014_initial" <?php echo ($_POST['country_maps'] == 'Afghanistan_2014_initial') ? "selected" : "" ; ?>>Afghanistan 2014 initial</option>
+			  <option value="Afghanistan_2014_runoff" <?php echo ($_POST['country_maps'] == 'Afghanistan_2014_runoff') ? "selected" : "" ; ?>>Afghanistan 2014 runoff</option>
+			  <option value="Albania_2013" <?php echo ($_POST['country_maps'] == 'Albania_2013') ? "selected" : "" ; ?>>Albania 2013</option>
+			  <option value="Bangladesh_2001" <?php echo ($_POST['country_maps'] == 'Bangladesh_2001') ? "selected" : "" ; ?>>Bangladesh 2001</option>
+			  <option value="Cambodia_2013" <?php echo ($_POST['country_maps'] == 'Cambodia_2013') ? "selected" : "" ; ?>>Cambodia 2013</option>
+			  <option value="Kenya_2013" <?php echo ($_POST['country_maps'] == 'Kenya_2013') ? "selected" : "" ; ?>>Kenya 2013</option>
+			  <option value="Libya_2014" <?php echo ($_POST['country_maps'] == 'Libya_2014') ? "selected" : "" ; ?>>Libya 2014</option>
+			  <option value="Libya_2014_Fem" <?php echo ($_POST['country_maps'] == 'Libya_2014_Fem') ? "selected" : "" ; ?>>Libya 2014 Fem</option>
+			  <option value="South_Africa_2014" <?php echo ($_POST['country_maps'] == 'South_Africa_2014') ? "selected" : "" ; ?>>South Africa 2014</option>
+			  <option value="Uganda_2006" <?php echo ($_POST['country_maps'] == 'Uganda_2006') ? "selected" : "" ; ?>>Uganda 2006</option>
+		      </select>
+		      <!--<span class="error">* <?php echo $nameErr;?></span>-->
+		  </div>
+		  <div class="pure-control-group">
+		      1b. Build maps (upload .shp, .dbf, .prj, .shx)<br/>
+		      <input type="file" name="userfile_maps[]" multiple="multiple" onchange="this.form.submit()">
+		      <!--<span class="error">* <?php echo $emailErr;?></span>-->
+		  </div>  
+		  <p class="box">
+		      Using data from:
+		      <label class="filename" id="userfileText_maps"><?php echo $_SESSION["userSelectedFile_maps"]; ?></label>
+		  </p>
+            
+<?php
+if(isset($_SESSION["userSelectedFile_maps"])) {
+    $mi_lines = $_SESSION["mi_lines"];
+    //echo "hello";
+    $can_lines = $_SESSION["can_lines"];
+?>
+		  <div class="pure-control-group">
+		      2. Merge Index<br/>
+		      <select name="mergeindex_maps" id="mergeindex_maps">
+		      <?php foreach ($mi_lines as $dataValue) {
+			    if ($dataValue != '') {
+			        echo "<option value=" . $dataValue . ">";
+			        echo $dataValue;
+			        echo "</option>";
+                }
+		      } ?>
+		      </select>
+		      <span class="error">* <?php echo $nameErr;?></span>
+		  </div>
+
+		  <div class="pure-control-group">
+		      3. Select Candidates/Parties<br/>
+		      <select data-placeholder="Select Candidates/Parties" name="candidates_maps[]" id="candidates_maps" multiple class="chosen-select">
+		      <?php foreach ($can_lines as $dataValue) {
+		
+			     if ($dataValue != '') {
+			        echo "<option value=" . $dataValue . ">";
+			        echo $dataValue;
+			        echo "</option>";             
+			     }
+		
+		      } ?>
+		      </select>
+		      <span class="error">* <?php echo $nameErr;?></span>
+		  </div>
+		  <div class="pure-control-group">
+		      4. Check Methods<br/>
+              <input name='methods_maps[]' type="checkbox" value="1">First Digit<br/>
+		      <input name='methods_maps[]' type="checkbox" value="2">Benford's 2nd Digit<br/>
+		      <input name='methods_maps[]' type="checkbox" value="3">Last Digit (Counts)<br/>
+		      <input name='methods_maps[]' type="checkbox" value="4">Counts 05s Indicator<br/>
+		      <input name='methods_maps[]' type="checkbox" value="5">Percentages 05s Indicator<br/>
+		  </div>
+
+		  <input type="submit" value="Start Analysis" name="StartAnalysis_maps" onclick="showWait()">  <p style="margin: 10px"></p>
+
+        <?php
+        if(isset($_SESSION["analysis_data_maps"])) 
+        {
+        ?>
+                <input type="submit" value="Download Maps" name="DownloadResults_maps" onclick="document.location.href='/downloadMaps'; return false;">  
+        <?php
+        }
+        ?>
+
+        <div id="waitmessage">Please wait..</div>
+
+<?php
+}
+?>
+            
+        </fieldset>
+		</form>        

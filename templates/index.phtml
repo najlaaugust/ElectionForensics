@@ -1,0 +1,111 @@
+<?php include("header.phtml"); ?>
+<style>
+
+/*
+ * -- PURE FORM STYLES --
+ * Style the form inputs and labels
+ */
+.pure-form label {
+    margin: 1em 0 0;
+    font-weight: bold;
+    font-size: 100%;
+}
+
+.pure-form input[type] {
+    border: 2px solid #ddd;
+    box-shadow: none;
+    font-size: 100%;
+    width: 100%;
+    margin-bottom: 1em;
+}
+
+/*
+ * -- PURE BUTTON STYLES --
+ * I want my pure-button elements to look a little different
+ */
+.pure-button {
+    background-color: #886b01; /* #1f8dd6*/
+    color: white;
+    padding: 0.5em 2em;
+    border-radius: 5px;
+}
+
+a.pure-button-primary {
+    background: white;
+    color: #886b01; /* #1f8dd6;*/
+    border-radius: 5px;
+    font-size: 120%;
+}
+
+</style>
+
+<div class="splash-container">
+    
+    <div class="splash">
+        <p style="color: green; left: 0; position: fixed; top: 60px; margin-left: 20px;"><?php echo $_SESSION["user"] . ", " . $errMSG ?></p>
+        <h1 class="splash-head">Election Forensics Toolkit v0.2.1</h1>
+        <p class="splash-subhead">
+            Center for Political Studies | University of Michigan | Institute for Social Research
+        </p>
+        <p style="visibility: collapse;">
+            <?php if( isset($_SESSION['user'])!= "" ){ ?>
+                <a href="\displaydata" class="pure-button pure-button-primary">Get Started</a>
+            <?php } else { ?>
+                <a href="#register_here" class="pure-button pure-button-primary">Get Started</a>
+            <?php } ?>
+        </p>
+    </div>
+</div>
+
+
+<div class="content-wrapper">
+    <?php if( isset($_SESSION['user'])== "" ){ ?>
+    <div class="content">
+        
+        <div class="pure-g">
+            <div class="l-box-lrg pure-u-1 pure-u-md-2-5">
+                <h2 id="register_here" class="content-head is-center">Register here to use site.</h2>
+                <form class="pure-form pure-form-stacked" method="POST" action="/registeruser">
+                    <fieldset>
+
+                        <label for="name">Your Name</label>
+                        <input name="name" type="text" placeholder="Your Name">
+
+                        <label for="email">Your Email</label>
+                        <input name="email" type="email" placeholder="Your Email">
+
+                        <label for="password">Your Password</label>
+                        <input name="pass" type="password" placeholder="Your Password">
+
+                        <button type="submit" class="pure-button">Sign Up</button>
+                        <?php echo $nameError; echo $emailError; echo $passError; ?>
+                        <?php echo $errTyp; echo $errMSG; ?>
+                    </fieldset>
+                </form>
+            </div>
+            
+            <div class="l-box-lrg pure-u-1 pure-u-md-3-5" style="width: 40%; padding:  50px; float:  right;">
+                <h2><u>Already registered, login here</u></h4>
+                <form class="" method="POST" action="/loginuser">
+                    <fieldset>
+                        <label for="email">Email</label>
+                        <input name="email" type="email" placeholder="Your Email" width="150">
+
+                        <label for="password">Password</label>
+                        <input name="pass" type="password" placeholder="Your Password" width="150">
+
+                        <button type="submit" class="pure-button">Login</button>                        
+                    </fieldset>
+                    <?php echo $emailError2; echo $passError2; echo $errMSG; ?>
+                </form>
+
+                <h4>More Information</h4>
+                <p>
+                    Email: 
+                    <a href="mailto:election-forensics@umich.edu" target="_top">election-forensics@umich.edu</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <?php } ?>
+<?php include("footer.phtml"); ?>

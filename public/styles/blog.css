@@ -1,0 +1,95 @@
+h3 {
+    font-weight: 100;
+}
+
+/* LAYOUT CSS */
+.pure-img-responsive {
+    max-width: 100%;
+    height: auto;
+}
+
+#layout-about {
+    padding: 0;
+}
+
+.header-about {
+    text-align: center;
+    top: auto;
+    /*margin: 3em auto; */
+    margin: 50% 2em 0;
+}
+
+.header-input {
+    text-align: center;
+    top: auto;
+    /*margin: 3em auto; */
+    margin: 50% 2em 0;
+}
+
+.sidebar {
+    background: #e4e1df; /* rgb(61, 79, 93);*/
+    color: #00274c !important;
+}
+
+.brand-title,
+.brand-tagline {
+    margin: 0; line-height: 1.5em;
+}
+.brand-title {
+    text-transform: uppercase; color: #886b01 !important; 
+}
+.brand-tagline {
+    font-weight: 300;
+    color: #00274c; /*rgb(176, 202, 219);*/
+}
+
+.content-about { margin: 0 !important; padding: 2em 1em 0 !important; /*border:  solid 5px red !important; */}
+/*
+
+.footer {
+    text-align: center;
+    padding: 1em 0;
+}
+.footer a {
+    color: #ccc;
+    font-size: 80%;
+}
+.footer .pure-menu a:hover,
+.footer .pure-menu a:focus {
+    background: none;
+}*/
+
+@media (min-width: 48em) {
+    
+    .pure-control-group select, input[type=text] {
+        width: 300px;
+    }
+   
+    .content-about {
+        padding: 5em 3em !important;
+        margin-left: 30% !important;
+        min-height: 1000px;
+    }
+
+    .content-display {
+        padding: 5em 3em !important;
+        margin-left: 20% !important;
+        min-height: 1000px;
+        /*border:  solid 5px red !important; */
+    }
+
+    .header-about {
+        margin: 50% 2em 0;
+    }
+
+    .header-input {
+        margin: 25% 2em 0;
+        text-align: left;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+    }
+}

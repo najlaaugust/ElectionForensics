@@ -1,0 +1,85 @@
+<?php 
+require_once 'Kendo/Autoload.php';
+ini_set('memory_limit', '-1');
+function formatDataForGrid($array) 
+{
+    $data = Array();
+    foreach ($array as $row) {
+        $values = Array();
+        foreach ( $row as $key => $colvalue ) {
+            $newKey = ($key == " " || $key == "") ? "X" : $key;
+            $newKey = str_replace(array("'", " ", "."), "", $newKey);
+            $values[$newKey] = $colvalue;
+        }
+        
+        array_push($data, $values);
+    }
+    return $data;
+}
+
+//DRAWGRID START
+if (isset($_SESSION["userSelectedFile"])) 
+{
+
+    $array = $_SESSION["array"];  // get data from session to drawgrid
+    $head = $_SESSION["head"];
+
+    $data = formatDataForGrid($array);
+
+    $grid = new \Kendo\UI\Grid('grid');
+   
+    foreach ($head as $dataValue) {
+        $column = new \Kendo\UI\GridColumn();
+        $newdataValue = ($dataValue == " " || $dataValue == "") ? "X" : $dataValue;
+        $newdataValue = str_replace(array("'", " ", "."), "", $newdataValue);
+        $column->field( $newdataValue );
+        $column->width('100px');
+        $grid->addColumn($column);
+    }
+  
+    $dataSource = new \Kendo\Data\DataSource();
+    $dataSource->data($data)
+            ->pageSize(20)
+            ->serverPaging(false);
+
+    $pageable = new Kendo\UI\GridPageable();
+    $pageable->refresh(true)
+      ->pageSizes(true)
+      ->buttonCount(10);
+
+    $grid->dataSource($dataSource)
+         ->pageable($pageable);
+
+
+}
+//DRAWGRID END
+
+?>
+<?php include("header.phtml"); ?>
+<!--[if lte IE 8]>
+    <link rel="stylesheet" href="/styles/blog-old-ie.css">
+<![endif]-->
+<!--[if gt IE 8]><!-->
+    <link rel="stylesheet" href="/styles/blog.css">
+<!--<![endif]-->
+    <link rel="stylesheet" href="/styles/kendo.common.min.css" />
+	<link rel="stylesheet" href="/styles/kendo.default.min.css" />
+	<link rel="stylesheet" href="/styles/kendo.dataviz.min.css" />
+	<link rel="stylesheet" href="/styles/kendo.dataviz.default.min.css" />
+	<script src="/javascript/kendo.all.min.js"></script>
+
+
+    <div id="layout-about" class="">
+        <div class="sidebar">
+            <div class="header-input">
+                <?php include("inputform.phtml"); ?>
+            </div>
+        </div>
+        <div style="color: black;" class="content-display">
+            <?php 
+                echo $grid->render(); 
+            ?>
+        </div>
+    </div>
+
+<?php include("footer.phtml"); ?>

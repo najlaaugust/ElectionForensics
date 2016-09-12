@@ -1,0 +1,23 @@
+<?php include("header.phtml"); ?>
+<!--[if lte IE 8]>
+    <link rel="stylesheet" href="/styles/blog-old-ie.css">
+<![endif]-->
+<!--[if gt IE 8]><!-->
+    <link rel="stylesheet" href="/styles/blog.css">
+<!--<![endif]-->
+
+    <div id="layout-about" class="">
+        <div class="sidebar">
+            <div class="header-input">
+                <?php include("inputform.phtml"); ?>
+            </div>
+        </div>
+        <div class="content-display">
+            <?php 
+                    $sessionid = session_id();
+                    include("results" . $sessionid . ".html"); 
+            ?>
+        </div>
+    </div>
+
+<?php include("footer.phtml"); ?>

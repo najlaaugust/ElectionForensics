@@ -1,0 +1,198 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="Election Forensics Toolkit.">
+    <title>Election Forensics Toolkit - Help</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+<!--[if lte IE 8]>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-old-ie-min.css">
+<![endif]-->
+<!--[if gt IE 8]><!-->
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
+<!--<![endif]-->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+	<link rel="stylesheet" href="/styles/chosen.css" type="text/css">
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="/styles/marketing-old-ie.css">
+    <![endif]-->
+    <!--[if gt IE 8]><!-->
+        <link rel="stylesheet" href="/styles/marketing.css">
+    <!--<![endif]-->
+    <link rel="stylesheet" href="/styles/mystyle.css" type="text/css">
+<!--[if lte IE 8]>
+    <link rel="stylesheet" href="/styles/help-ie.css">
+<![endif]-->
+<!--[if gt IE 8]><!-->
+    <link rel="stylesheet" href="/styles/help.css">
+<!--<![endif]-->
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+</head>
+<body>
+<div id="wrapper">
+
+
+    <div id="layout-about" class="">
+        <div class="sidebar">
+            <div class="header-about">
+                <h1 class="brand-title">Toolkit Documentation</h1>
+                <h2 class="brand-tagline" style="line-height: 16px !important;">
+                    <a href="\pdf\guide.pdf">Download a Guide to Election Forensics <br/>(Hicken and Mebane 2015)</a>
+                </h2>
+                <h2 class="brand-tagline" style="margin-top: 25px; margin-bottom: 15px; line-height: 16px !important;">
+                    <a href="\pdf\report.pdf">Download a Working Paper about Election Forensics <br/>(Mebane 2015)</a>
+                </h2>
+                <h2 class="brand-tagline">
+                    <a href="\pdf\rstudio-k35768.pdf">Download a Guide to the Website</a>
+                </h2>
+                <h2 class="brand-tagline">
+                    <a href="#Tutorial">Tutorial</a>
+                </h2>
+                <h2 class="brand-tagline">
+                    <a href="#Files">USAID data files</a>
+                </h2>
+                <h2 class="brand-tagline">
+                    <a href="\pdf\rstudio-X35768.pdf">preloaded vote data information</a>
+                </h2>
+                <h2 class="brand-tagline">
+                    <a href="http://www.electiondataarchive.org/" target="_blank">About us</a>
+                </h2>
+            </div>
+        </div>
+        <div class="content-about" id="Tutorial">
+            <h1>Tutorial</h1>
+            <p>
+            This tutorial is designed to demonstrate the basic functionality of the website. The website is a proof-of-concept creation built using <b>Shiny</b> (by R Studio) and it is fragile in many ways: error checking is limited and it is not hard to crash the website (a refresh should restart it); results are not guaranteed for any purpose; use this website and any results it may produce at your own risk. In the tutorial we will focus on election forensics analysis of polling station vote count data from the 2013 election in Albania. For motivation, explanations and examples of election forensics see <a href="\pdf\guide.pdf">Guide to Election Forensics</a>. For discussion of the Albania 2013 election and of elections in seven other countries see <a href="\pdf\report.pdf">Working Paper on the Election Forensics Toolkit.</a></p>            
+            <p>
+            The website currently runs using the Open Source <b>Shiny</b> Server. This allows a single <b>R</b> process to execute at a time. If several people are trying to use the website at the same time, then only one person's computations will execute at a time. If that happens while you are using the website, then you may experience waits when it appears that nothing is happening. Also note that the computer the website runs on is often busy in ways that may interfere with the website, to the point of causing the website to crash. If this proves to be a problem for you, please send mail to <a href="mailto:election-forensics@umich.edu" target="_top">election-forensics@umich.edu</a>
+            </p>
+            <img src="\images\img1.png" />
+            <p>
+            <b>STEP 1:</b> There are two possibilities for choosing the dataset to work with. The first option is to choose the country and election from a list of internally preloaded data (these data were organized and used in analysis done for the IIE/USAID grant that funded the original work on this website; information about key variables to use from the preloaded vote data is in <a href="\pdf\rstudio-X35768.pdf">preloaded vote data information</a>):
+            </p>
+            <img src="\images\img2.png" />
+            <p>
+            The second option is to upload data from your local computer. For the purpose of this tutorial the entire package for election forensics analysis with Albania data can be downloaded to use from either of the following links: Download Albania's data (zip) or Download Albania's data (rar) . For the rest of this tutorial we'll be using the externally downloaded data, so at this stage you need to click on the link, download the data archive for Albania and unzip (or unrar) the files. The data directory/folder 'AlbaniaData' contains two folders: 'ElectionForensicsAnalysisData' and 'ClusterAnalysisData'.
+            </p>
+            <p>
+            Click on the <b>'Display Data'</b> button and choose the file of vote data to work with: open the folder 'ElectionForensicsAnalysisData' and upload the data file 'Albania2013.csv'.
+            </p>
+            <img src="\images\img3.png" />
+            <p>
+            <b>STEP 2:</b> after the data are uploaded or selected, the first 10 rows of data are presented in the tab <b>'Table'</b>. By clicking the <b>'Summary'</b> button you can get summary information for the variables in the data.
+            </p>
+            <p>
+            Select all the candidates for which you want to get election forensics indicators (you can simply delete the 'All Leaders' option, it analyzes the parties with the most votes in a given area as specified by the Level in the next step). In the Albania's data 'C007'-'C072' variables stand for the Candidates (the parties receiving the most votes are 'C050' - the Socialist Party of Albania and 'C035' - Socialist Movement for Integration). Let's select 'C035' as the party.
+            </p>
+            <p>
+            Note that for the preloaded vote dataset the names differ: the two parties just discussed are 'V50' and 'V35'. The option 'All Leaders' is missing because it is activated only if the candidate/party names start with 'C' or 'P' followed by a number (this naming convention helps the 'All Leaders' algorithm identify the subset of variables that correspond to the vote counts for candidates/parties; all such variable are considered as possibly containing 'Leaders' votes).
+            </p>
+            <p>The name of the party or candidate associated with each variable in the votes and shapefiles data is provided in files in the Variable Legends column at <a href="#Files">USAID data files</a></p>
+            <img src="\images\img4.png" />
+            <p>
+            <b>STEP 3:</b> In <b>Select Level</b> select the level used to gather observations for analysis (the variable 'Prefectures' triggers doing separate analysis for each of the prefectures). Also select 'Registered' for <b>Select Total Registered</b> and select 'Ballots' for <b>Select Total Votes</b>. The 'Registered' variable measures total number of eligible voters for each observation. The 'Ballots' variable measure the total number of ballots cast for each observation. If no variable is specified for <b>Select Total Registered</b> or <b>Select Total Votes</b>, then some methods will not be computable.
+            <p>
+            Also check the methods you want to get the estimates for. In this tutorial we are selecting <b>'Benford's 2nd Digit', 'Last Digit', 'Counts(05s)'</b> and <b>'Multimodality Test'</b>. Two last methods, <b>'Klimek et al. simulation method'</b> and especially <b>'finite mixture likelihood method'</b>, are computationally intensive and can take a very long time, so we won't be using them.
+            </p>
+            <p>
+            If you are using the preloaded dataset you should choose for <b>Select Level</b> the variable 'QARKU', for <b>Select Total Registered</b> the variable 'Nvoters' and for <b>Select Total Votes</b> the variable 'NValid'.
+            </p>
+            <p>
+            <b>STEP 4: Click on the 'Start Analysis' button.</b>
+            </p>
+            <img src="\images\img5.png" />
+            <p>It'll take some time to compute the results: in the upper right corner the progress bar shows what variable the system is working on.</p>
+            <img src="\images\img6.png" />
+            <p>
+            Usually computations are time consuming. To compute confidence intervals the Toolkit does nonparametric bootstraps using 1000 resamples. That can take several minutes for all of the prefectures in the Albania data. The website has several features built-in that allow results to display faster. In particular some results that have been previously computed are saved in an XML database. If one of those methods is requested, the website reports the previously computed result instead of computing it anew. Any method that successfully produces results has the result saved and tagged in the XML database. Occasionally those saved results will be migrated into the initial database so that if the same method is requested for that variable using the same data, the result will be looked up instead of computed anew.</p>
+
+<p><b>STEP 5:</b> After computations finish, click the <b>'Basic Forensics Analysis'</b> button to see point estimates and 95 percent confidence intervals (below the point estimate, in parentheses). For the Dip test the value shown is the p-value. All anomalous values are marked in red.</p>
+
+<p>Results are shown for 'Turnout' if variables were specified for <b>Select Total Registered</b> and <b>Select Total Votes</b> . The 'Turnout' proportion is <b>Total Votes</b> divided by <b>Total Registered</b>.            </p>
+            <img src="\images\img7.png" />
+
+            <p>To save the results on your computer you can click on the 'Download Results' button or on the 'Download HTML' button.</p>
+            <img src="\images\img8.png" />
+<p>The <b>'Download Results'</b> button will cause results to be saved in csv spreadsheet format in a file called 'Unknown.csv'. In this case color information will not be saved. The <b>'Download HTML'</b> button will cause results to be saved in HTML format in a file called 'Unknown.html'. In this case color information will be saved along with the information about point estimates and confidence intervals. To convert the HTML file into xlsx spreadsheet format, one method is to perform the following steps: (1) open the HTML file in Excel; (2) after the table is opened you will find multiple extra objects among which by scrolling down you'll find the table; (3) make sure that the table or some of its parts are not hidden by other objects (if some parts are hidden by other objects, a picture, for instance, please click on them and move them away or remove them); (4) after the area is cleaned, highlight the table of interest and copy it to the buffer; (5) create a new Excel workbook and paste the table object into it; (6) save the new file with the table on your computer.</p>
+            <img src="\images\img9.png" />
+
+<p><b>STEP 6:</b> Let's turn to geographic clustering analysis. Click on the <b>'Create Cluster Maps'</b> button and select the batch of all 14 files (7 files of point layer data, 7 files of polygon layer data) from the folder 'ClusterAnalysisData'. Alternately you can use box '1a.' to select 'Albania 2013' from a list of preloaded shapefiles. For Albania doing this also reads a set of polygon and point shapefiles.</p>
+            <img src="\images\img15.png" />
+<p><b>STEP 7:</b> Select <b>'Merge Index'</b> as 'BashkiaKom'. Select candidate 'C35' and mark 'Last Digit (Counts)' as a method of choice. Then click on the 'Start Analysis' button.</p>
+
+<p>Note: there is also an option of using preloaded shapefiles. To use the preloaded files, select 'Albania 2013' in box '1a.' and in <b>'Merge Index'</b> select 'BashkiaKom'.</p>
+
+            <img src="\images\img16.png" />
+<p>It takes approximately 5 minutes to produce basic maps with the Albania data (currently these are not saved in a database). Don't do anything before all the maps are displayed on the screen.</p>
+
+            <img src="\images\img17.png" />
+<p>To save the results on your computer you can click on the 'Download Maps' button. The results will be saved in pdf format in a file called 'Unknown.pdf'. The maps in the downloaded pdf look vastly better than the representation you can see on the website.</p>
+
+<p>If you have followed through all the steps successfully, then you have experienced all of the features currently implemented in Election Forensics Toolkit v0.2.</p>
+
+
+            <h1 id="Files">USAID data files</h1>
+            <p>Free files for downloading</p>
+            <table class="downloads">
+                <tr>
+                    <th>Countries</th>
+                    <th>Variable Legends</th>
+                    <th>Electoral Data</th>
+                    <th>Geodata</th>
+                </tr>
+            <tr>
+                <td>Afghanistan 2014</td>
+                <td><a href="/Data/legendfiles/legends.txt" target="_blank">Download</a></td>
+                <td><a href="#" onclick="document.location.href='/downloadFiles/Afghanistan2014/votes'; return false;">Download</a></td>
+                <td><a href="#" onclick="document.location.href='/downloadFiles/Afghanistan2014/shapefiles'; return false;">Download</a></td>
+            </tr>
+            <tr>
+                <td>Albania 2013</td>
+                <td><a href="/Data/legendfiles/legends.txt" target="_blank">Download</a></td>
+                <td><a href="#" onclick="document.location.href='/downloadFiles/Albania2013/votes'; return false;">Download</a></td>
+                <td><a href="#" onclick="document.location.href='/downloadFiles/Albania2013/shapefiles'; return false;">Download</a></td>
+            </tr>
+            <tr>
+                <td>Bangladesh 2001</td>
+                <td><a href="/Data/legendfiles/legends.txt" target="_blank">Download</a></td>
+                <td><a href="#" onclick="document.location.href='/downloadFiles/Bangladesh2001/votes'; return false;">Download</a></td>
+                <td><a href="#" onclick="document.location.href='/downloadFiles/Bangladesh2001/shapefiles'; return false;">Download</a></td>
+            </tr>
+            <tr>
+                <td>Cambodia 2013</td>
+                <td><a href="/Data/legendfiles/legends.txt" target="_blank">Download</a></td>
+                <td><a href="#" onclick="document.location.href='/downloadFiles/Cambodia2013/votes'; return false;">Download</a></td>
+                <td><a href="#" onclick="document.location.href='/downloadFiles/Cambodia2013/shapefiles'; return false;">Download</a></td>
+            </tr>
+            <tr>
+                <td>Kenya 2013</td>
+                <td><a href="/Data/legendfiles/legends.txt" target="_blank">Download</a></td>
+                <td><a href="#" onclick="document.location.href='/downloadFiles/Kenya2013/votes'; return false;">Download</a></td>
+                <td><a href="#" onclick="document.location.href='/downloadFiles/Kenya2013/shapefiles'; return false;">Download</a></td>
+            </tr>
+            <tr>
+                <td>Libya 2014</td>
+                <td><a href="/Data/legendfiles/legends.txt" target="_blank">Download</a></td>
+                <td><a href="#" onclick="document.location.href='/downloadFiles/Libya2014/votes'; return false;">Download</a></td>
+                <td><a href="#" onclick="document.location.href='/downloadFiles/Libya2014/shapefiles'; return false;">Download</a></td>
+            </tr>
+            <tr>
+                <td>SouthAfrica 2014</td>
+                <td><a href="/Data/legendfiles/legends.txt" target="_blank">Download</a></td>
+                <td><a href="#" onclick="document.location.href='/downloadFiles/SouthAfrica2014/votes'; return false;">Download</a></td>
+                <td><a href="#" onclick="document.location.href='/downloadFiles/SouthAfrica2014/shapefiles'; return false;">Download</a></td>
+            </tr>
+            <tr>
+                <td>Uganda 2006</td>
+                <td><a href="/Data/legendfiles/legends.txt" target="_blank">Download</a></td>
+                <td><a href="#" onclick="document.location.href='/downloadFiles/Uganda2006/votes'; return false;">Download</a></td>
+                <td><a href="#" onclick="document.location.href='/downloadFiles/Uganda2006/shapefiles'; return false;">Download</a></td>
+            </tr>
+            </table>
+        </div>
+    </div>
+
+<?php include("footer.phtml"); ?>

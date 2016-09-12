@@ -1,0 +1,46 @@
+<?php
+
+?>
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="Election Forensics Toolkit.">
+    <title>Election Forensics Toolkit</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+<!--[if lte IE 8]>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-old-ie-min.css">
+<![endif]-->
+<!--[if gt IE 8]><!-->
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
+<!--<![endif]-->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+	<link rel="stylesheet" href="/styles/chosen.css" type="text/css">
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="/styles/marketing-old-ie.css">
+    <![endif]-->
+    <!--[if gt IE 8]><!-->
+        <link rel="stylesheet" href="/styles/marketing.css">
+    <!--<![endif]-->
+    <link rel="stylesheet" href="/styles/mystyle.css" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+</head>
+<body>
+<div id="wrapper">
+<div class="">
+    <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+        <a class="pure-menu-heading" href="\">Election Forensics Toolkit v0.2.1</a>
+        <ul id="nav" class="pure-menu-list">
+            <li class="pure-menu-item active"><a href="\about" class="pure-menu-link">About</a></li>
+             <?php if( isset($_SESSION['user'])!="" ){ ?>
+                <li class="pure-menu-item"><a href="\displaydata" class="pure-menu-link">Display Data</a></li>
+                <li class="pure-menu-item"><a href="\datasummary" class="pure-menu-link">Data Summary</a></li>
+                <li class="pure-menu-item"><a href="\analysis" class="pure-menu-link">Basic Forensics Analysis</a></li>
+                <li class="pure-menu-item"><a href="\clustermaps" class="pure-menu-link">Create Cluster Maps</a></li>
+                <li class="pure-menu-item"><a href="\help" target="_blank" class="pure-menu-link">Help</a></li>
+            <li class="pure-menu-item"><a href="\logout" class="pure-menu-link">Log out</a></li>
+             <?php } ?>
+        </ul>
+    </div>
+</div>

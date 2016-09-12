@@ -1,0 +1,14 @@
+.box { border: solid 1px; margin-right: 14px; background-color: #5c9f59; padding: 4px 10px; color: white !important; }
+
+.filename { font-weight: bold; display: block; color: white; }
+
+.datatable {
+   
+    position: absolute;
+    top: 0px;
+    /*top: 200px;*/
+    left: 21%;
+    margin: 0;
+    padding-bottom: 10px;
+    /*border:  solid 1px; height: 500px; color:  black; */
+}
