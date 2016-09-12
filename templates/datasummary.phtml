@@ -17,7 +17,7 @@
         <div class="content-display">
             <p style="white-space: pre; font-family: 'Courier New'; margin: 0; padding: 0; border: solid 1px; ">
             <?php
-                $summary_filename = "summary_" . session_id() . ".txt";
+                $summary_filename = __DIR__ . "/../public/Results/summary_" . session_id() . ".txt";
                 if(file_exists($summary_filename)){
                     $text = file_get_contents($summary_filename);
                     $trimmed = ltrim($text);

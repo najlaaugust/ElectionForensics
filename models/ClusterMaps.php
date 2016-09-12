@@ -7,8 +7,9 @@ class ClusterMaps
         try {
             $sessionid = session_id();
             //store filesname in a text file
-
-            $file = fopen($sessionid."FileNames.csv","w");
+            $filenames_file = __DIR__ . "/../public/Uploads/" . $sessionid . "FileNames.csv";
+            $file = fopen($filenames_file,"w");
+            //$file = fopen($sessionid."FileNames.csv","w");
             fputcsv($file,$map_files);
             fclose($file);
 
@@ -16,13 +17,13 @@ class ClusterMaps
             exec("Rscript loadData_maps.R $sel $sessionid");
 
             //wait for file with name mi[sessionid].txt and can[sessionid].txt to appear then 1) copy-paste-rename and delete it. 2) Read contents of file to populate two dropdowns
-            $resultsfile_mi = "mi" . $sessionid . ".txt";
-            $resultsfile_can = "can" . $sessionid . ".txt";
-            
-            while(! (file_exists($resultsfile_mi) && file_exists($resultsfile_can)) ) sleep(1);
+            $resultsfile_mi = __DIR__ . "/../public/Results/mi" . $sessionid . ".txt";
+            $resultsfile_can = __DIR__ . "/../public/Results/can" . $sessionid . ".txt";
 
-            $renamedfile_mi = "data" . $resultsfile_mi;                 
-            $renamedfile_can = "data" . $resultsfile_can;                 
+            $renamedfile_mi = __DIR__ . "/../public/Results/datami" . $sessionid . ".txt";
+            $renamedfile_can = __DIR__ . "/../public/Results/datacan" . $sessionid . ".txt";
+
+            while(! (file_exists($resultsfile_mi) && file_exists($resultsfile_can)) ) sleep(1);
 
             copy($resultsfile_mi, $renamedfile_mi);
             copy($resultsfile_can, $renamedfile_can);
@@ -44,7 +45,7 @@ class ClusterMaps
 
     private function plotsExist($filesToExpect)
     {
-        $dir = "";
+        $dir = "D:/PHP/ElectionForensics/public/Results/";
 
         $sessionid = session_id();
 
@@ -111,7 +112,8 @@ class ClusterMaps
 
             while(!$this->plotsExist($no_files)) sleep(2);
 
-            $dir = "";
+            //$dir = "";
+            $dir = "D:/PHP/ElectionForensics/public/Results/";
             $files = array();
             foreach (glob($dir.$sessionid."*.png") as $file) {
 	            $files[] = $file;

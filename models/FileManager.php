@@ -28,10 +28,10 @@ class FileManager
 		        case "Kenya 2013":
 		            $fn = $base_dir . "Kenya2013/votes/Kenya2013.csv";
 		            break;
-		        case "Libya 2013":
+		        case "Libya 2014":
 		            $fn = $base_dir . "Libya2014/votes/Libya2014CC.csv";
 		            break;
-		        case "Libya 2013 Fem":
+		        case "Libya 2014 Fem":
 		            $fn = $base_dir . "Libya2014/votes/Libya2014CC_F.csv";
 		            break;
 		        case "South Africa 2014":
@@ -71,33 +71,29 @@ class FileManager
         $sessionid = session_id();
         // call R file to create summary
         try {
-              //$fname = $_SESSION["userSelectedFile"];
-              //$logger->addInfo("userSelectedFile filename: " . $fname);                    
+            //save data to csv file in uploads folder
+            $fdata = $_SESSION["csv_data"];
 
-                //save data to csv file
-                $fdata = $_SESSION["csv_data"];
-
-                $jsonfile = "data" . $sessionid . ".csv";
-                //$jsonfile = __DIR__ . "/../public/Results/data" . $sessionid . ".csv";
+            $csvfile = __DIR__ . "/../public/Uploads/data" . $sessionid . ".csv";
             
-                $fp = fopen($jsonfile, 'w');
-                fwrite($fp, $fdata);
-                fclose($fp);
+            $fp = fopen($csvfile, 'w');
+            fwrite($fp, $fdata);
+            fclose($fp);
 
-
-              exec("Rscript getSummary.R $jsonfile $sessionid");
+            $logger->addInfo("calling getSummary with sessionid: " . $sessionid);                    
+            exec("Rscript getSummary.R $sessionid");
+            //exec("Rscript getSummary.R $csvfile $sessionid");
         } catch(Exception $e) {
             $logger->addInfo("ERROR- " . $e);
         }
         
-        //wait for file with name [sessionid].txt to appear then 1) copy-paste-rename and delete it. 
-        $summary_file = $sessionid . ".txt";
-        //$resultsfile = __DIR__ . "/../public/Results/" . $sessionid . ".csv";
+        //wait for file with name [sessionid].txt to appear in the Results folder then 1) copy-paste-rename and delete it. 
+        $summary_file = __DIR__ . "/../public/Results/" . $sessionid . ".txt";
+        $summary_renamedfile = __DIR__ . "/../public/Results/summary_" . $sessionid . ".txt";
+
+        $logger->addInfo("Waiting for summary file produced by R: " . $summary_file);                    
         while(!file_exists($summary_file)) sleep(1);
-
-        $summary_renamedfile = "summary_" . $summary_file;                 
-        //$resultsfile = __DIR__ . "/../public/Results/results" . $sessionid . ".csv";
-
+              
         copy($summary_file, $summary_renamedfile);
 
         unlink($summary_file);

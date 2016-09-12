@@ -16,7 +16,7 @@
             <?php 
                 $images = $_SESSION["map_images"];
                 foreach($images as $image) {
-	                echo '<img src="'.$image.'" /><br />';
+	                echo '<img src="'. str_replace('D:/PHP/ElectionForensics/public/', '', $image) .'" /><br />';
                 }
             ?>
         </div>

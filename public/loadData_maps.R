@@ -12,6 +12,9 @@ library(moments)
 library(spdep)
 library(diptest)
 
+Uploadspath <- "D:/PHP/ElectionForensics/public/Uploads";
+Resultspath <- "D:/PHP/ElectionForensics/public/Results";
+
 mkcldf <- function(fnames) {
     name <- as.character(fnames);
     size <- file.size(fnames);
@@ -20,8 +23,8 @@ mkcldf <- function(fnames) {
     clusterdataCL <- data.frame(name,size,type,datapath, stringsAsFactors=FALSE);
 }
 
-zz <- file("loadmaps.Rout", open="wt")
-sink(zz, type= c("output", "message"))
+#zz <- file("loadmaps.Rout", open="wt")
+#sink(zz, type= c("output", "message"))
 
 args <- commandArgs(TRUE)
 
@@ -29,14 +32,18 @@ user_uploaded <- args[1]
 session_id <- args[2]
 
 if (user_uploaded == "yes") {
-    #fnames <- c("Albania2013_communes.dbf", "Albania2013_communes.prj", "Albania2013_communes.shp", "Albania2013_communes.shx", "Albania2013_communes.cpg", "Albania2013_communes.sbn", "Albania2013_communes.sbx", "Albania2013_points_popweighted2.dbf", "Albania2013_points_popweighted2.prj", "Albania2013_points_popweighted2.shp", "Albania2013_points_popweighted2.shx", "Albania2013_points_popweighted2.cpg", "Albania2013_points_popweighted2.sbn", "Albania2013_points_popweighted2.sbx");
+    prevWD <- getwd();
+    setwd(Uploadspath);
+
     fnames <- scan(paste(session_id,"FileNames.csv",sep=""), what="", sep=",")
 
-    SHPpath <- "D:/PHP/ElectionForensics/public";
-    uploadDirectory <- "D:/PHP/ElectionForensics/public";
+    #SHPpath <- "D:/PHP/ElectionForensics/public";
+    #uploadDirectory <- "D:/PHP/ElectionForensics/public";
+    SHPpath <- Uploadspath;
+    uploadDirectory <- Uploadspath;
 
-    prevWD <- getwd();
-    setwd(SHPpath);
+    #prevWD <- getwd();
+    #setwd(SHPpath);
     
     name <- as.character(fnames);
     size <- file.size(fnames);
@@ -47,7 +54,7 @@ if (user_uploaded == "yes") {
     shpDF <- clusterdataCL;
 } else {
     #print ('dropdown selected');
-    print (user_uploaded);
+    #print (user_uploaded);
     basepath <- "D:/PHP/ElectionForensics/public/Data";
 
     if (user_uploaded=='Afghanistan_2014_initial') {
@@ -169,7 +176,8 @@ df <- Return_File
 
 items=c("No index", names(df$CLFile1@data)) #items=c(names(df$CLFile1@data))
 
-setwd(prevWD);
+#setwd(prevWD);
+setwd(Resultspath);
 #print(items)
 
 output_mi <- paste("mi",session_id,sep="")
@@ -189,5 +197,5 @@ output_can <- paste("can",session_id,sep="")
 output_can_txt <- paste(output_can,".txt",sep="")
 write(items_c, file = output_can_txt, append = FALSE, sep = "")
 
-sink(type="message")
-sink()
+#sink(type="message")
+#sink()

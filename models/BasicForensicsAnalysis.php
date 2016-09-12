@@ -11,15 +11,8 @@ class BasicForensicsAnalysis
             // execute R script from shell
 	        // this will save results to the filesystem
 
-          //  //save data to csv file moved to after file upload, only need the file name
-          //   $fdata = $_SESSION["csv_data"];
-
-            $jsonfile = "data" . $sessionid . ".csv";
-          //  //$jsonfile = __DIR__ . "/../public/Results/data" . $sessionid . ".csv";
-            
-         //   $fp = fopen($jsonfile, 'w');
-         //   fwrite($fp, $fdata);
-         //   fclose($fp);
+            // name of file where data resides 
+            $csvfilename = "data" . $sessionid . ".csv";
 
             $fname = $_SESSION["userSelectedFile"];
 
@@ -30,7 +23,7 @@ class BasicForensicsAnalysis
 	        $met = $analysis_data->getMethods();
             
             $logger->addInfo("fname- " . $fname);
-            $logger->addInfo("jsonfile- " . $jsonfile);
+            $logger->addInfo("csvfilename- " . $csvfilename);
             $logger->addInfo("can- " . $can);
             $logger->addInfo("lev- " . $lev);
             $logger->addInfo("reg- " . $reg);
@@ -38,26 +31,22 @@ class BasicForensicsAnalysis
             $logger->addInfo("met- " . $met);
 
             try {
-                exec("Rscript invokeEF.R $fname $jsonfile $can $lev $reg $vot $met");
+                exec("Rscript invokeEF.R $fname $csvfilename $can $lev $reg $vot $met");
             } catch(Exception $e) {
                 $logger->addInfo("ERROR- " . $e);
             }
 
             //wait for file with name [sessionid].csv to appear then 1) copy-paste-rename and delete it. 2) show button for download 3) allow user to download results[sessionid].csv
-            $resultsfile = $sessionid . ".csv";
-            //$resultsfile = __DIR__ . "/../public/Results/" . $sessionid . ".csv";
+            //$resultsfile = $sessionid . ".csv";
+            $resultsfile = __DIR__ . "/../public/Results/" . $sessionid . ".csv";
+            $renamedfile = __DIR__ . "/../public/Results/results" . $sessionid . ".csv";
+
+            $resultsfile_html = __DIR__ . "/../public/Results/" . $sessionid . ".html";
+            $renamedfile_html = __DIR__ . "/../public/Results/results" . $sessionid . ".html";
+
             while(!file_exists($resultsfile)) sleep(1);
 
-            $renamedfile = "results" . $resultsfile;                 
-            //$resultsfile = __DIR__ . "/../public/Results/results" . $sessionid . ".csv";
-
             copy($resultsfile, $renamedfile);
-
-            //do same for html file
-            $resultsfile_html = $sessionid . ".html";
-            //$resultsfile_html = __DIR__ . "/../public/Results/" . $sessionid . ".html";
-            $renamedfile_html = "results" . $resultsfile_html;          
-            //$renamedfile_html = __DIR__ . "/../public/Results/results" . $sessionid . ".html";
             copy($resultsfile_html, $renamedfile_html);
 
             unlink($resultsfile);

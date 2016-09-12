@@ -228,7 +228,8 @@ unset($_SESSION['country_maps']);
                 //Make sure we have a filepath
                 if ($tmpFilePath != ""){
                     //Setup our new file path
-                    $newFilePath = "" . $mapFileName;
+                    $uploads_dir = __DIR__ . "/../public/Uploads/";
+                    $newFilePath = $uploads_dir . $mapFileName;
                     move_uploaded_file($tmpFilePath, $newFilePath);
                     $map_files[] = $mapFileName;
                 }
@@ -376,9 +377,7 @@ $app->get('/downloadFiles/{country}/{type}', function ($request, $response, $arg
 $app->get('/download', function ($request, $response, $args) {
     $this->logger->addInfo("downloading csv results file");
 
-    //session_start();
-    $sessionid = session_id();
-    $file = "results" . $sessionid . ".csv";
+    $file = __DIR__ . "/../public/Results/results" . session_id() . ".csv";
     header('Content-Description: File Transfer');
     header('Content-Type: application/octet-stream');
     header('Content-Disposition: attachment; filename="'.basename($file).'"');
@@ -392,8 +391,7 @@ $app->get('/download', function ($request, $response, $args) {
 
 $app->get('/downloadHTML', function ($request, $response, $args) {
     $this->logger->addInfo("downloading html results file");
-    $sessionid = session_id();
-    $file = "results" . $sessionid . ".html";
+    $file = __DIR__ . "/../public/Results/results" . session_id() . ".html";
     header('Content-Description: File Transfer');
     header('Content-Type: application/octet-stream');
     header('Content-Disposition: attachment; filename="'.basename($file).'"');
@@ -408,8 +406,7 @@ $app->get('/downloadHTML', function ($request, $response, $args) {
 
 $app->get('/downloadMaps', function ($request, $response, $args) {
     $this->logger->addInfo("downloading maps results file");
-    $sessionid = session_id();
-    $file = "results" . $sessionid . ".pdf";
+    $file = __DIR__ . "/../public/Results/results" . session_id() . ".pdf";
     header('Content-Description: File Transfer');
     header('Content-Type: application/octet-stream');
     header('Content-Disposition: attachment; filename="'.basename($file).'"');

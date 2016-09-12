@@ -14,8 +14,8 @@
         </div>
         <div class="content-display">
             <?php 
-                    $sessionid = session_id();
-                    include("results" . $sessionid . ".html"); 
+                    $results_filename = __DIR__ . "/../public/Results/results" . session_id() . ".html";
+                    include($results_filename); 
             ?>
         </div>
     </div>

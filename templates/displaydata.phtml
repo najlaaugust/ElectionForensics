@@ -1,37 +1,44 @@
 <?php 
 require_once 'Kendo/Autoload.php';
 ini_set('memory_limit', '-1');
-function formatDataForGrid($array) 
+function formatDataForGrid($the_array) 
 {
-    $data = Array();
-    foreach ($array as $row) {
-        $values = Array();
+    $my_data = Array();
+
+    foreach ($the_array as $row) {
+        $new_array = Array();
+        //print_r($row);
         foreach ( $row as $key => $colvalue ) {
-            $newKey = ($key == " " || $key == "") ? "X" : $key;
-            $newKey = str_replace(array("'", " ", "."), "", $newKey);
-            $values[$newKey] = $colvalue;
+            $new_key = ($key == " " || $key == "") ? "X" : $key;
+            $new_key = str_replace(array("'", " ", ".", "-", "/", "'", ","), "", $new_key);
+           
+            $new_value = $colvalue;
+            $new_value = iconv('UTF-8', 'ISO-8859-1//TRANSLIT//IGNORE', $new_value);
+            //$unwanted_array = array('Â'=>'A');
+            //$new_value = strtr( $new_value, $unwanted_array );
+
+            $new_array[$new_key] = $new_value;
         }
-        
-        array_push($data, $values);
+        $my_data[] = $new_array;
     }
-    return $data;
+    return $my_data;
 }
 
 //DRAWGRID START
 if (isset($_SESSION["userSelectedFile"])) 
 {
 
-    $array = $_SESSION["array"];  // get data from session to drawgrid
+    $my_array = $_SESSION["array"];  // get data from session to drawgrid
     $head = $_SESSION["head"];
 
-    $data = formatDataForGrid($array);
+    $data = formatDataForGrid($my_array);
 
     $grid = new \Kendo\UI\Grid('grid');
    
     foreach ($head as $dataValue) {
         $column = new \Kendo\UI\GridColumn();
         $newdataValue = ($dataValue == " " || $dataValue == "") ? "X" : $dataValue;
-        $newdataValue = str_replace(array("'", " ", "."), "", $newdataValue);
+        $newdataValue = str_replace(array("'", " ", ".", "-", "/", "'", ","), "", $newdataValue);
         $column->field( $newdataValue );
         $column->width('100px');
         $grid->addColumn($column);

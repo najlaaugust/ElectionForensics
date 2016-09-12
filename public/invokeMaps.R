@@ -2,12 +2,16 @@ library(gridExtra)
 library(grid)  
 source("ClusterDetector.R")
 
-zz <- file("allMaps.Rout", open="wt")
-sink(zz, type= c("output", "message"))
+Uploadspath <- "D:/PHP/ElectionForensics/public/Uploads";
+Resultspath <- "D:/PHP/ElectionForensics/public/Results";
+
+
+#zz <- file("allMaps.Rout", open="wt")
+#sink(zz, type= c("output", "message"))
 
 args <- commandArgs(TRUE)
 
-print(args)
+#print(args)
 
 user_uploaded <- args[1]
 session_id <- args[2]
@@ -21,10 +25,15 @@ met <- strsplit(args[5], ',')[[1]]
 
 if (user_uploaded == "yes") {
     #fnames <- c("Albania2013_communes.dbf", "Albania2013_communes.prj", "Albania2013_communes.shp", "Albania2013_communes.shx", "Albania2013_communes.cpg", "Albania2013_communes.sbn", "Albania2013_communes.sbx", "Albania2013_points_popweighted2.dbf", "Albania2013_points_popweighted2.prj", "Albania2013_points_popweighted2.shp", "Albania2013_points_popweighted2.shx", "Albania2013_points_popweighted2.cpg", "Albania2013_points_popweighted2.sbn", "Albania2013_points_popweighted2.sbx");
+    prevWD <- getwd();
+    setwd(Uploadspath);
     fnames <- scan(paste(session_id,"FileNames.csv",sep=""), what="", sep=",")
 
-    SHPpath <- "D:/PHP/ElectionForensics/public";
-    uploadDirectory <- "D:/PHP/ElectionForensics/public";
+    #SHPpath <- "D:/PHP/ElectionForensics/public";
+    #uploadDirectory <- "D:/PHP/ElectionForensics/public";
+    SHPpath <- Uploadspath;
+    uploadDirectory <- Uploadspath;
+
     name <- as.character(fnames);
     size <- file.size(fnames);
     type <- as.character(mime::guess_type(fnames));
@@ -34,7 +43,7 @@ if (user_uploaded == "yes") {
     shpDF <- clusterdataCL;
 } else {
     #print ('dropdown selected');
-    print (user_uploaded);
+    #print (user_uploaded);
     basepath <- "D:/PHP/ElectionForensics/public/Data";
 
     if (user_uploaded=='Afghanistan_2014_initial') {
@@ -153,12 +162,6 @@ if (length(shpPath)==1) {
 
 
 
-
-
-#results = ClusterDetector(Return_File,mi,can,met)
-#print(results)
-
-
 v1 <- rep(paste(rep(can,each=length(met)), met, sep="_"), each=2)
 cand_label<-unlist(strsplit(v1, "_"))[seq(1,length(unlist(strsplit(v1, "_"))),2)]
 meth_label<-unlist(strsplit(v1, "_"))[seq(2,length(unlist(strsplit(v1, "_"))),2)]
@@ -168,12 +171,15 @@ Candidates_methods<-paste(v1,rep(c("M","G"),length(v1)/2), sep="_")
 counter<-rep(1:length(cand_label),each=2)
 #    conductanalysisCL()
 
-print('call Maps')
+#print('call Maps')
 #GMapsResultsCl <<- MapsResultsCl = ClusterDetector(Return_File,mi,can,met)
 MapsResultsCl = ClusterDetector(Return_File,mi,can,met)
-print('done with Maps')
+#print('done with Maps')
 sink()
 sink(type="message")
+
+setwd(Resultspath);
+
 #pdf("plots.pdf")
 
 #output to pdf
